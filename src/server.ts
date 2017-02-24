@@ -17,6 +17,8 @@ import { routes } from './server.routes';
 const app  = express();
 const ROOT = path.join(path.resolve(__dirname, '..'));
 const port = process.env.PORT || 4200;
+const minifyHTML = require('express-minify-html');
+const minify = require('express-minify');
 
 /**
  * enable prod mode for production environments
@@ -31,6 +33,35 @@ if (environment.production) {
 app.engine('.html', createEngine({}));
 app.set('views', path.join(ROOT, 'client'));
 app.set('view engine', 'html');
+
+/**
+ * Enable minification
+ */
+app.use(minifyHTML({
+    override:      true,
+    exception_url: false,
+    htmlMinifier: {
+        removeComments:            true,
+        collapseWhitespace:        true,
+        collapseBooleanAttributes: true,
+        removeAttributeQuotes:     true,
+        removeEmptyAttributes:     true,
+        minifyJS:                  true
+    }
+}));
+app.use(minify({
+  js_match: /javascript/,
+  css_match: /css/,
+  sass_match: /scss/,
+  less_match: /less/,
+  stylus_match: /stylus/,
+  coffee_match: /coffeescript/,
+  json_match: /json/,
+  uglifyJS: undefined,
+  cssmin: undefined,
+  cache: false,
+  onerror: undefined,
+}));
 
 /**
  * Enable compression

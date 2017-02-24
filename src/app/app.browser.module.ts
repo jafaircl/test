@@ -6,12 +6,17 @@
  * client.ts and server.ts
  */
 
-import { NgModule } from '@angular/core';
+import { NgModule, ModuleWithProviders } from '@angular/core';
 import { UniversalModule } from 'angular2-universal';
 import { FormsModule } from '@angular/forms';
 import { AppComponent } from './index';
-// import { RouterModule } from '@angular/router';
-// import { appRoutes } from './app/app.routing';
+import { ShellComponent } from './shell/shell.component';
+import { RouterModule } from '@angular/router';
+import { appRoutes } from './app.routing';
+
+import { PostListComponent } from './post-list/post-list.component';
+
+export const AppRouting: ModuleWithProviders = RouterModule.forRoot(appRoutes);
 
 /**
  * Top-level NgModule "container"
@@ -20,18 +25,18 @@ import { AppComponent } from './index';
   /** Root App Component */
   bootstrap: [ AppComponent ],
   /** Our Components */
-  declarations: [ AppComponent ],
+  declarations: [ AppComponent, ShellComponent, PostListComponent ],
   imports: [
     /**
      * NOTE: Needs to be your first import (!)
      * BrowserModule, HttpModule, and JsonpModule are included
      */
     UniversalModule,
-    FormsModule
+    FormsModule,
     /**
      * using routes
      */
-    // RouterModule.forRoot(appRoutes)
+    RouterModule.forRoot(appRoutes),
   ]
 })
 export class AppModule {
